@@ -1,5 +1,44 @@
 # React + TypeScript + Vite
 
+## Requisitos previos
+
+Antes de comenzar, asegúrate de tener las siguientes herramientas instaladas en tu sistema:
+
+- **Node.js**: Versión 16 o superior. [Descargar Node.js](https://nodejs.org/)
+- **pnpm**: Versión 7 o superior. Si no lo tienes instalado, puedes hacerlo ejecutando:
+
+  ```bash
+  npm install -g pnpm
+  ```
+
+## Instalación
+
+1. Clona el repositorio:
+
+   ```bash
+   git clone https://github.com/kritzanyeraldin/FormFronted.git
+   cd proyecto-con-pnpm-vite
+   ```
+
+2. Instala las dependencias del proyecto con **pnpm**:
+
+   ```bash
+   pnpm install
+   ```
+
+## Iniciar el servidor de desarrollo
+
+Una vez instaladas las dependencias, inicia el servidor de desarrollo local con el siguiente comando:
+
+```bash
+pnpm dev
+```
+
+Esto abrirá automáticamente la aplicación en tu navegador, normalmente en `http://localhost:5173`.
+
+---
+
+¡Ahora estás listo para comenzar a desarrollar! 🚀
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
