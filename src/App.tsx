@@ -18,8 +18,9 @@ type FormValues = {
 	correo: string
 	contrasena: string
 }
+
 interface ValidationResponse {
-	mensaje: string
+	detail?: string
 }
 
 const App = () => {
@@ -37,7 +38,7 @@ const App = () => {
 				value.length < 2 ? 'Last Name must have at least 2 letters' : null,
 			correo: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
 			contrasena: (value) =>
-				value.length < 4 ? 'You must be at least 4 to register' : null
+				value.length < 8 ? 'You must be at least 4 to register' : null
 		}
 	})
 
@@ -65,6 +66,8 @@ const App = () => {
 		}
 	}
 	useEffect(() => {
+		console.log('validationResult', JSON.stringify(validationResult))
+
 		if (validationResult) {
 			setOpened(true)
 		}
@@ -74,7 +77,6 @@ const App = () => {
 		try {
 			const mensaje = await validateForm(values)
 			setValidationResult(mensaje)
-			console.log('mensaje:', mensaje)
 		} catch (error) {
 			console.error('Error al validar el formulario:', error)
 		}
@@ -150,7 +152,11 @@ const App = () => {
 				title='Resultado de la validación'
 				centered
 			>
-				<p>{validationResult?.mensaje}</p>
+				<p>
+					{validationResult?.detail
+						? validationResult?.detail
+						: 'Error con el correo'}
+				</p>
 			</Modal>
 
 			<Box
