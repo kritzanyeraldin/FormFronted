@@ -17,7 +17,7 @@ Antes de comenzar, asegúrate de tener las siguientes herramientas instaladas en
 
    ```bash
    git clone https://github.com/kritzanyeraldin/FormFronted.git
-   cd proyecto-con-pnpm-vite
+   cd FormFronted
    ```
 
 2. Instala las dependencias del proyecto con **pnpm**:
