@@ -5,17 +5,18 @@ import {
 	Flex,
 	PasswordInput,
 	Box,
-	Image
+	Image,
+	Modal
 } from '@mantine/core'
 import g1 from './assets/g1.svg'
 import g2 from './assets/g2.svg'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 type FormValues = {
-	name: string
-	lastName: string
-	email: string
-	password: string
+	nombre: string
+	apellido: string
+	correo: string
+	contrasena: string
 }
 interface ValidationResponse {
 	mensaje: string
@@ -23,19 +24,19 @@ interface ValidationResponse {
 
 const App = () => {
 	const [validationResult, setValidationResult] = useState<ValidationResponse>()
-
+	const [opened, setOpened] = useState(false)
 	const form = useForm({
 		mode: 'uncontrolled',
 		validateInputOnChange: true,
-		initialValues: { name: '', lastName: '', email: '', password: '' },
+		initialValues: { nombre: '', apellido: '', contrasena: '', correo: '' },
 
 		validate: {
-			name: (value) =>
+			nombre: (value) =>
 				value.length < 2 ? 'Name must have at least 2 letters' : null,
-			lastName: (value) =>
+			apellido: (value) =>
 				value.length < 2 ? 'Last Name must have at least 2 letters' : null,
-			email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
-			password: (value) =>
+			correo: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
+			contrasena: (value) =>
 				value.length < 4 ? 'You must be at least 4 to register' : null
 		}
 	})
@@ -48,13 +49,13 @@ const App = () => {
 				'http://127.0.0.1:8000/validar-formulario/',
 				{
 					method: 'POST',
-					mode: 'no-cors',
 					headers: {
 						'Content-Type': 'application/json'
 					},
 					body: JSON.stringify(formValues)
 				}
 			)
+
 			const data: ValidationResponse = await response.json()
 
 			return data
@@ -63,9 +64,13 @@ const App = () => {
 			throw error
 		}
 	}
+	useEffect(() => {
+		if (validationResult) {
+			setOpened(true)
+		}
+	}, [validationResult])
 
 	const handleSubmit = async (values: FormValues) => {
-		console.log('Datos enviados:', values)
 		try {
 			const mensaje = await validateForm(values)
 			setValidationResult(mensaje)
@@ -100,32 +105,32 @@ const App = () => {
 						<TextInput
 							variant='filled'
 							label='Name'
-							placeholder='Name'
-							key={form.key('name')}
-							{...form.getInputProps('name')}
+							placeholder='nombre'
+							key={form.key('nombre')}
+							{...form.getInputProps('nombre')}
 						/>
 						<TextInput
 							variant='filled'
-							label='LastName'
-							placeholder='Last Name'
-							key={form.key('lastName')}
-							{...form.getInputProps('lastName')}
+							label='Last Name'
+							placeholder='apellido'
+							key={form.key('apellido')}
+							{...form.getInputProps('apellido')}
 						/>
 						<TextInput
 							variant='filled'
 							mt='sm'
 							label='Email'
-							placeholder='Email'
-							key={form.key('email')}
-							{...form.getInputProps('email')}
+							placeholder='correo'
+							key={form.key('correo')}
+							{...form.getInputProps('correo')}
 						/>
 						<PasswordInput
 							variant='filled'
 							mt='sm'
 							label='Password'
-							placeholder='Password'
-							key={form.key('password')}
-							{...form.getInputProps('password')}
+							placeholder='contrasena'
+							key={form.key('contrasena')}
+							{...form.getInputProps('contrasena')}
 						/>
 						<Button
 							mt='lg'
@@ -139,9 +144,15 @@ const App = () => {
 					</form>
 				</Box>
 			</Box>
-			{validationResult
-				? `los datos se validaron ${validationResult.mensaje}`
-				: `no se validaron los  datos`}
+			<Modal
+				opened={opened}
+				onClose={() => setOpened(false)}
+				title='Resultado de la validación'
+				centered
+			>
+				<p>{validationResult?.mensaje}</p>
+			</Modal>
+
 			<Box
 				flex={1}
 				h='100vh'
